@@ -1,15 +1,15 @@
 [submodule "config-server"]
 	path = config-server
-	url = https://github.com/profemzy/config-server
+	url = git@github.com:profemzy/config-server
 [submodule "discoveryservice"]
 	path = discoveryservice
-	url = https://github.com/profemzy/discoveryservice
+	url = git@github.com:profemzy/discoveryservice
 [submodule "zuulapigateway"]
 	path = zuulapigateway
-	url = https://github.com/profemzy/zuulapigateway
+	url = git@github.com:profemzy/zuulapigateway
 [submodule "users-ws"]
 	path = users-ws
-	url = https://github.com/profemzy/users-ws
+	url = git@github.com:profemzy/users-ws
 [submodule "photoappapialbums"]
 	path = photoappapialbums
-	url = https://github.com/profemzy/photoappapialbums
+	url = git@github.com:profemzy/photoappapialbums
