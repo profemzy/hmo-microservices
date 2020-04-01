@@ -63,6 +63,7 @@ services:
       - MQ_HOST=rabbitmq
       - EUREKA_SERVER=eureka-server
       - GATEWAY_IP=zuul-api-gateway
+      - logging.file.name=/api-logs/users-ws.log
 
   albums-ws:
     container_name: albums-ws
@@ -78,6 +79,8 @@ services:
       - CS_HOST=config-server
       - EUREKA_SERVER=eureka-server
       - logging.file.name=/api-logs/albums-ws.log
+    volumes:
+      - ~/api-logs:/api-logs
 
   rabbitmq:
     container_name: hmo-rabbitmq
