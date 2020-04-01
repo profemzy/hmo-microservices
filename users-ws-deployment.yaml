@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: users-ws
+  name: users-ws
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: users-ws
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: users-ws
+    spec:
+      containers:
+      - env:
+        - name: CS_HOST
+          value: config-server
+        - name: EUREKA_SERVER
+          value: eureka-server
+        - name: GATEWAY_IP
+          value: zuul-api-gateway
+        - name: MQ_HOST
+          value: rabbitmq
+        - name: MYSQL_HOST
+          value: mysql
+        - name: ZIPKIN_SERVER
+          value: zipkin
+        image: profemzy/users-ws:0.0.1-SNAPSHOT
+        imagePullPolicy: ""
+        name: users-ws
+        ports:
+        - containerPort: 8083
+      restartPolicy: Always
+      serviceAccountName: ""

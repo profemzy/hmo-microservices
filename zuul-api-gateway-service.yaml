@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: zuul-api-gateway
+  name: zuul-api-gateway
+spec:
+  type: LoadBalancer
+  ports:
+  - name: "8082"
+    port: 8082
+    targetPort: 8082
+  selector:
+    io.kompose.service: zuul-api-gateway

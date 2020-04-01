@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: mysql
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: mysql
+    spec:
+      containers:
+      - env:
+        - name: MYSQL_DATABASE
+          value: hmo_app
+        - name: MYSQL_PASSWORD
+          value: pwd.001
+        - name: MYSQL_ROOT_PASSWORD
+          value: pwd.001
+        - name: MYSQL_USER
+          value: profemzy
+        image: mysql:5.7
+        imagePullPolicy: ""
+        livenessProbe:
+          exec:
+            command:
+            - exit 0
+        name: mysql
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mysql-database-data-volume
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: mysql-database-data-volume
+        persistentVolumeClaim:
+          claimName: mysql-database-data-volume

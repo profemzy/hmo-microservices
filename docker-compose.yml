@@ -1,0 +1,119 @@
+version: "2.4"
+services:
+  config-server:
+    container_name: hmo-config-server
+    image: profemzy/configserver:0.0.1-SNAPSHOT
+    healthcheck:
+      test: "exit 0"
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      rabbitmq:
+        condition: service_started
+    environment:
+      MQ_HOST: rabbitmq
+
+  eureka-server:
+    container_name: eureka-server
+    image: profemzy/discoveryservice:0.0.1-SNAPSHOT
+    healthcheck:
+      test: "exit 0"
+    ports:
+      - "8081:8081"
+    restart: always
+    depends_on:
+      config-server:
+        condition: service_healthy
+    environment:
+      CS_HOST: config-server
+
+  zuul-api-gateway:
+    container_name: zuul-api-gateway
+    image: profemzy/zuulapigateway:0.0.1-SNAPSHOT
+    healthcheck:
+      test: "exit 0"
+    ports:
+      - "8082:8082"
+    restart: always
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    environment:
+      EUREKA_SERVER: eureka-server
+      MQ_HOST: rabbitmq
+      CS_HOST: config-server
+
+  users-ws:
+    container_name: users-ws
+    image: profemzy/users-ws:0.0.1-SNAPSHOT
+    ports:
+      - "8083:8083"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      zuul-api-gateway:
+        condition: service_healthy
+      zipkin:
+        condition: service_healthy
+    environment:
+      CS_HOST: config-server
+      MYSQL_HOST: mysql
+      ZIPKIN_SERVER: zipkin
+      MQ_HOST: rabbitmq
+      EUREKA_SERVER: eureka-server
+      GATEWAY_IP: zuul-api-gateway
+
+  albums-ws:
+    container_name: albums-ws
+    image: profemzy/photoappapialbums:0.0.1-SNAPSHOT
+    ports:
+      - "8084:8084"
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    environment:
+      CS_HOST: config-server
+      EUREKA_SERVER: eureka-server
+
+  rabbitmq:
+    container_name: hmo-rabbitmq
+    image: rabbitmq:3-management
+    healthcheck:
+      test: "exit 0"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "4369:4369"
+    restart: always
+
+  zipkin:
+    container_name: zipkin-server
+    image: openzipkin/zipkin
+    healthcheck:
+      test: "exit 0"
+    ports:
+      - "9411:9411"
+    restart: always
+
+
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    healthcheck:
+      test: "exit 0"
+    ports:
+      - "3308:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pwd.001
+      MYSQL_USER: profemzy
+      MYSQL_PASSWORD: pwd.001
+      MYSQL_DATABASE: hmo_app
+    volumes:
+      - mysql-database-data-volume:/var/lib/mysql
+
+volumes:
+  mysql-database-data-volume:

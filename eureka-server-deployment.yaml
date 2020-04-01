@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: eureka-server
+  name: eureka-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: eureka-server
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: eureka-server
+    spec:
+      containers:
+      - env:
+        - name: CS_HOST
+          value: config-server
+        image: profemzy/discoveryservice:0.0.1-SNAPSHOT
+        imagePullPolicy: ""
+        livenessProbe:
+          exec:
+            command:
+            - exit 0
+        name: eureka-server
+        ports:
+        - containerPort: 8081
+      restartPolicy: Always
+      serviceAccountName: ""

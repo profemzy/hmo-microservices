@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: zuul-api-gateway
+  name: zuul-api-gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: zuul-api-gateway
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: zuul-api-gateway
+    spec:
+      containers:
+      - env:
+        - name: CS_HOST
+          value: config-server
+        - name: EUREKA_SERVER
+          value: eureka-server
+        - name: MQ_HOST
+          value: rabbitmq
+        image: profemzy/zuulapigateway:0.0.1-SNAPSHOT
+        imagePullPolicy: ""
+        livenessProbe:
+          exec:
+            command:
+            - exit 0
+        name: zuul-api-gateway
+        ports:
+        - containerPort: 8082
+      restartPolicy: Always
+      serviceAccountName: ""

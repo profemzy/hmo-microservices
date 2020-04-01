@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: config-server
+  name: config-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: config-server
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: config-server
+    spec:
+      containers:
+      - env:
+        - name: MQ_HOST
+          value: rabbitmq
+        image: profemzy/configserver:0.0.1-SNAPSHOT
+        imagePullPolicy: ""
+        livenessProbe:
+          exec:
+            command:
+            - exit 0
+        name: hmo-config-server
+        ports:
+        - containerPort: 8080
+      restartPolicy: Always
+      serviceAccountName: ""

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: zipkin
+  name: zipkin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: zipkin
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: zipkin
+    spec:
+      containers:
+      - image: openzipkin/zipkin
+        imagePullPolicy: ""
+        livenessProbe:
+          exec:
+            command:
+            - exit 0
+        name: zipkin-server
+        ports:
+        - containerPort: 9411
+      restartPolicy: Always
+      serviceAccountName: ""

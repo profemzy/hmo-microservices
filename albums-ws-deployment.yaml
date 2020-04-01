@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: albums-ws
+  name: albums-ws
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: albums-ws
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: albums-ws
+    spec:
+      containers:
+      - env:
+        - name: CS_HOST
+          value: config-server
+        - name: EUREKA_SERVER
+          value: eureka-server
+        image: profemzy/photoappapialbums:0.0.1-SNAPSHOT
+        imagePullPolicy: ""
+        name: albums-ws
+        ports:
+        - containerPort: 8084
+      restartPolicy: Always
+      serviceAccountName: ""
