@@ -64,6 +64,8 @@ services:
       - EUREKA_SERVER=eureka-server
       - GATEWAY_IP=zuul-api-gateway
       - logging.file.name=/api-logs/users-ws.log
+    volumes:
+      - ~/api-logs:/api-logs
 
   albums-ws:
     container_name: albums-ws
