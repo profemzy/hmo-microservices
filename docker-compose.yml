@@ -12,7 +12,7 @@ services:
       rabbitmq:
         condition: service_started
     environment:
-      MQ_HOST: rabbitmq
+      - MQ_HOST=rabbitmq
 
   eureka-server:
     container_name: eureka-server
@@ -26,7 +26,7 @@ services:
       config-server:
         condition: service_healthy
     environment:
-      CS_HOST: config-server
+      - CS_HOST=config-server
 
   zuul-api-gateway:
     container_name: zuul-api-gateway
@@ -40,9 +40,9 @@ services:
       eureka-server:
         condition: service_healthy
     environment:
-      EUREKA_SERVER: eureka-server
-      MQ_HOST: rabbitmq
-      CS_HOST: config-server
+      - EUREKA_SERVER=eureka-server
+      - MQ_HOST=rabbitmq
+      - CS_HOST=config-server
 
   users-ws:
     container_name: users-ws
@@ -57,12 +57,12 @@ services:
       zipkin:
         condition: service_healthy
     environment:
-      CS_HOST: config-server
-      MYSQL_HOST: mysql
-      ZIPKIN_SERVER: zipkin
-      MQ_HOST: rabbitmq
-      EUREKA_SERVER: eureka-server
-      GATEWAY_IP: zuul-api-gateway
+      - CS_HOST=config-server
+      - MYSQL_HOST=mysql
+      - ZIPKIN_SERVER=zipkin
+      - MQ_HOST=rabbitmq
+      - EUREKA_SERVER=eureka-server
+      - GATEWAY_IP=zuul-api-gateway
 
   albums-ws:
     container_name: albums-ws
@@ -75,8 +75,9 @@ services:
       config-server:
         condition: service_healthy
     environment:
-      CS_HOST: config-server
-      EUREKA_SERVER: eureka-server
+      - CS_HOST=config-server
+      - EUREKA_SERVER=eureka-server
+      - logging.file.name="/api-logs/albums-ws.log"
 
   rabbitmq:
     container_name: hmo-rabbitmq
@@ -108,10 +109,10 @@ services:
       - "3308:3306"
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: pwd.001
-      MYSQL_USER: profemzy
-      MYSQL_PASSWORD: pwd.001
-      MYSQL_DATABASE: hmo_app
+      - MYSQL_ROOT_PASSWORD=pwd.001
+      - MYSQL_USER=profemzy
+      - MYSQL_PASSWORD=pwd.001
+      - MYSQL_DATABASE=hmo_app
     volumes:
       - mysql-database-data-volume:/var/lib/mysql
 
