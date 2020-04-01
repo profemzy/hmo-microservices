@@ -77,7 +77,7 @@ services:
     environment:
       - CS_HOST=config-server
       - EUREKA_SERVER=eureka-server
-      - logging.file.name="/api-logs/albums-ws.log"
+      - logging.file.name=/api-logs/albums-ws.log
 
   rabbitmq:
     container_name: hmo-rabbitmq
