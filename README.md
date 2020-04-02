@@ -1,5 +1,7 @@
 #### SAMPLE SPRING MICROSERVICES USING DOCKER & KUBERNETES
 
+This codebase was heavily inspired by https://github.com/simplyi/SpringCloudVideoCourse many thanks.
+
 Cloning Submodules
 
 git clone /url/to/repo/with/submodules
