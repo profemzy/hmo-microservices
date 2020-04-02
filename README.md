@@ -13,7 +13,7 @@ git submodule update
 Packaging with Maven and Docker and Deploy to Docker Hub
 from each submodule run the following to package and deploy to DockerHub:
  
- mvn clean install
+ mvn package
  
  mvn dockerfile:push
  
