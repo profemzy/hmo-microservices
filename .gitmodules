@@ -13,3 +13,6 @@
 [submodule "photoappapialbums"]
 	path = photoappapialbums
 	url = git@github.com:profemzy/photoappapialbums
+[submodule "profile-ws"]
+	path = profile-ws
+	url = git@github.com:profemzy/profile-ws
