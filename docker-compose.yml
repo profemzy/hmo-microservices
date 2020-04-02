@@ -84,6 +84,23 @@ services:
     volumes:
       - ~/api-logs:/api-logs
 
+  profile-ws:
+    container_name: profile-ws
+    image: profemzy/profile-ws:0.0.1-SNAPSHOT
+    ports:
+      - "8085:8085"
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+    environment:
+      - CS_HOST=config-server
+      - EUREKA_SERVER=eureka-server
+      - logging.file.name=/api-logs/albums-ws.log
+    volumes:
+      - ~/api-logs:/api-logs
+
   rabbitmq:
     container_name: hmo-rabbitmq
     image: rabbitmq:3-management
